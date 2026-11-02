@@ -156,7 +156,7 @@ After the adaptor trimming, the adaptor-trimmed sequences are further processed 
 
 **Count Filters:**
 - `dict_min_count_rep1`: minimum count of a particular sequence in the dictionary sample of replicate 1 for it to be filtered in
-- `dict_min_count_rep2`: minimum count of a particular sequence in the dictionary sample of replicate 2 for it to not be filtered in
+- `dict_min_count_rep2`: minimum count of a particular sequence in the dictionary sample of replicate 2 for it to be filtered in
 - `clv_min_count_rep1`: minimum count of a particular sequence in the cleavage sample of replicate 1 for it to be filtered in
 - `clv_min_count_rep2`: minimum count of a particular sequence in the cleavage sample of replicate 1 for it to be filtered in
 
