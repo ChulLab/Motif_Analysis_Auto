@@ -18,7 +18,7 @@ Bt3: No Protein\
 Bt3: Targeting crRNA\
 Rfx: No Protein\
 Rfx: Targeting crRNA\
-Dictionary: oKWW2182
+Dictionary: oKW2182
 
 ### What the Code Does
 1. **Raw NGS Reads Preprocessing:**\
