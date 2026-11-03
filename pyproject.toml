@@ -1,5 +1,5 @@
 [project]
-name = "motif-analysis-local"
+name = "motif-analysis-automation"
 version = "1.0.0"
 description = "Snakemake pipeline for high-throughput in vitro Cas13 cleavage motif analysis"
 readme = "README.md"

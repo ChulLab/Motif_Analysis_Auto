@@ -1379,7 +1379,7 @@ wheels = [
 ]
 
 [[package]]
-name = "motif-analysis-local"
+name = "motif-analysis-automation"
 version = "1.0.0"
 source = { virtual = "." }
 dependencies = [
