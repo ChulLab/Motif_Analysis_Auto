@@ -1,0 +1,36 @@
+{
+  "title": "Motif Analysis Automation",
+  "description": "Snakemake pipeline for high-throughput in vitro Cas13 cleavage motif discovery using random substrate libraries and next-generation sequencing.",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Lam, Joe K.C.",
+      "affiliation": "School of Biomedical Sciences, LKS Faculty of Medicine, The University of Hong Kong, Hong Kong, China"
+    },
+    {
+      "name": "Ng, Hadrien",
+      "affiliation": "School of Biomedical Sciences, LKS Faculty of Medicine, The University of Hong Kong, Hong Kong, China"
+    },
+    {
+      "name": "Kwon, S. Chul",
+      "affiliation": "School of Biomedical Sciences, LKS Faculty of Medicine, The University of Hong Kong, Hong Kong, China"
+    }
+  ],
+  "keywords": [
+    "Cas13",
+    "cleavage motif",
+    "motif discovery",
+    "in vitro cleavage assay",
+    "next-generation sequencing",
+    "Snakemake"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/ChulLab/Motif_Analysis_Auto",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
