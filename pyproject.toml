@@ -1,8 +1,28 @@
 [project]
 name = "motif-analysis-local"
-version = "0.1.0"
-description = "Add your description here"
+version = "1.0.0"
+description = "Snakemake pipeline for high-throughput in vitro Cas13 cleavage motif analysis"
 readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Joe K.C. Lam", email = "joelamkc@connect.hku.hk" },
+    { name = "Hadrien Ng" },
+    { name = "S. Chul Kwon", email = "chul@hku.hk" },
+]
+keywords = [
+    "Cas13",
+    "cleavage motif",
+    "motif discovery",
+    "in vitro cleavage assay",
+    "next-generation sequencing",
+    "Snakemake",
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
 requires-python = ">=3.13"
 dependencies = [
     "argparse>=1.4.0",
@@ -19,3 +39,6 @@ dependencies = [
     "snakemake>=9.25.1",
     "xlsxwriter>=3.3.0",
 ]
+
+[project.urls]
+Repository = "https://github.com/ChulLab/Motif_Analysis_Auto"

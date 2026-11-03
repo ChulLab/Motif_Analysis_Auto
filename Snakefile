@@ -1,4 +1,4 @@
-#!/usr/local/bin/snakemake
+#!/usr/bin/env snakemake
 import os, time
 import pandas as pd
 import shutil, tempfile
@@ -10,12 +10,13 @@ INTERMEDIATE_DIR = config.get("intermediate_dir", "intermediate_files")
 PPSEQ_DIR = os.path.join(INTERMEDIATE_DIR, config.get("preprocessed_seq_dir", "preprocessed_sequences"))
 OUTPUT_DIR = config["output_dir"]
 LOGO_OUTPUT_DIR = os.path.join(INTERMEDIATE_DIR, "logo_output")
+LOGO_INPUT_DIR = os.path.join(INTERMEDIATE_DIR, "logo_input")
 os.makedirs(PPSEQ_DIR, exist_ok=True)
 os.makedirs(INTERMEDIATE_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(os.path.join(OUTPUT_DIR, "main_fig"), exist_ok=True)
 os.makedirs(os.path.join(OUTPUT_DIR, "supp_fig"), exist_ok=True)
-os.makedirs(os.path.join(INTERMEDIATE_DIR, "logo_input"), exist_ok=True)
+os.makedirs(LOGO_INPUT_DIR, exist_ok=True)
 os.makedirs(LOGO_OUTPUT_DIR, exist_ok=True)
 os.makedirs(os.path.join(OUTPUT_DIR, "motif_plogo"), exist_ok=True)
 
@@ -24,13 +25,21 @@ def out(cfg_entry, key="out"):
 
 def out_template(cfg_entry, key, **fmt):
     return os.path.join(OUTPUT_DIR, cfg_entry[key].format(**fmt))
-    
-KP_LOGO_ABS = shutil.which("kpLogo")
-if not KP_LOGO_ABS:
-    raise Exception("kpLogo not found. Please install and actvivate the environment according to instructions in the README.")
-print(f"Using kpLogo at: {KP_LOGO_ABS}")
 
-meta = pd.read_csv(config["sample_sheet"], dtype={"replicate": str}).set_index(["replicate", "protein", "type"])
+RUN_KPLOGO = config.get("run_kplogo", True)
+KP_LOGO_ABS = shutil.which("kpLogo") if RUN_KPLOGO else None
+KP_LOGO_AVAILABLE = KP_LOGO_ABS is not None
+if KP_LOGO_AVAILABLE:
+    print(f"Using kpLogo at: {KP_LOGO_ABS}")
+elif RUN_KPLOGO:
+    print(
+        "WARNING: kpLogo not found. kpLogo/plogo outputs will be skipped. "
+        "Install kpLogo or set run_kplogo: false to use the pLogo web server instead."
+    )
+else:
+    print("kpLogo disabled; skipping kpLogo/plogo outputs.")
+
+meta = pd.read_csv(config["sample_sheet"], dtype={"replicate": str}, encoding="utf-8-sig").set_index(["replicate", "protein", "type"])
 PAIRS = list(meta.index)
 KPLOGO_PAIRS = [(r, p) for (r, p, t) in PAIRS if t == "CR"]
 
@@ -62,6 +71,20 @@ _mapped = out(config["mapped_clv_table"])
 REP_FIGS = [_supp4a, _supp5a]
 if _has_rep2:
     REP_FIGS += [_supp4b, _supp5b]
+
+_kplogo_targets = []
+if KP_LOGO_AVAILABLE:
+    _kplogo_targets = [
+        expand(os.path.join(LOGO_OUTPUT_DIR,
+                            "{replicate}_{protein}/image/{replicate}_{protein}.info.eps"),
+               zip,
+               replicate=[r for (r, p) in KPLOGO_PAIRS],
+               protein=[p for (r, p) in KPLOGO_PAIRS]),
+        expand(f'{OUTPUT_DIR}/motif_plogo/{{replicate}}_{{protein}}.plogo.pdf',
+               zip,
+               replicate=[r for (r, p) in KPLOGO_PAIRS],
+               protein=[p for (r, p) in KPLOGO_PAIRS]),
+    ]
 
 MIN_QUAL = 30
 MIN_QUALIFIED = 90
@@ -97,18 +120,11 @@ rule all:
         # Fig-2f: boxplot + Mann-Whitney table
         *_fig2f,
 
-        # kpLogo outputs
-        expand(os.path.join(LOGO_OUTPUT_DIR,
-                            "{replicate}_{protein}/image/{replicate}_{protein}.info.eps"),
-               zip,
-               replicate=[r for (r, p) in KPLOGO_PAIRS],
-               protein=[p for (r, p) in KPLOGO_PAIRS]),
+        # Full mapped table
+        _mapped,
 
-        # plogo PDFs
-        expand(f'{OUTPUT_DIR}/motif_plogo/{{replicate}}_{{protein}}.plogo.pdf',
-               zip,
-               replicate=[r for (r, p) in KPLOGO_PAIRS],
-               protein=[p for (r, p) in KPLOGO_PAIRS]),
+        # kpLogo outputs (empty when run_kplogo is false or kpLogo is unavailable)
+        *_kplogo_targets,
 
 #rule fastqc:
 #    output: 'qualitycheck/{sample}_L2_1.fastqc.zip'
@@ -121,7 +137,8 @@ rule trim_adaptor:
     params:
         adapter_5p = lambda w: meta.loc[(w.replicate, w.protein, w.type), "adapter_5p"],
         adapter_3p = lambda w: meta.loc[(w.replicate, w.protein, w.type), "adapter_3p"],
-    shell: 'cutadapt {input} --cores 30 -g {params.adapter_5p}...{params.adapter_3p} --trimmed-only 2>> {LOG} | gzip -c - > {output}'
+    threads: 8
+    shell: 'cutadapt {input} --cores {threads} -g {params.adapter_5p}...{params.adapter_3p} --trimmed-only 2>> {LOG} | gzip -c - > {output}'
 
 rule trim_random_adaptor_sequences:
     input:  f'{PPSEQ_DIR}/{{replicate}}_{{protein}}-{{type}}.trim.fastq.gz'
@@ -130,7 +147,8 @@ rule trim_random_adaptor_sequences:
         random_at_3p = lambda w: meta.loc[(w.replicate, w.protein, w.type), "random_at_3p"],
         min_len      = lambda w: meta.loc[(w.replicate, w.protein, w.type), "min_len"],
         max_len      = lambda w: meta.loc[(w.replicate, w.protein, w.type), "max_len"],
-    shell: 'cutadapt {input} -u {params.random_at_3p} -m {params.min_len} -M {params.max_len} --cores 30 2>> {LOG} | \
+    threads: 8
+    shell: 'cutadapt {input} -u {params.random_at_3p} -m {params.min_len} -M {params.max_len} --cores {threads} 2>> {LOG} | \
 			gzip -c - > {output}'
 
 rule quality_filter:
@@ -151,7 +169,7 @@ rule convert_to_tsv:
     input:  f'{PPSEQ_DIR}/{{replicate}}_{{protein}}-{{type}}.collapsed.fa.gz'
     output: f'{PPSEQ_DIR}/{{replicate}}_{{protein}}-{{type}}.collapsed.tsv'
     shell: 'zcat {input} | \
-			seqkit fx2tab 2>> {LOG} > {output}'
+			seqkit fx2tab 2>> {LOG} | cut -f1,2 > {output}'
 
 # Call generate_plots.py
 rule generate_plots:
@@ -221,6 +239,11 @@ rule run_kpLogo:
     resources:
         kpLogo_lock = 1
     run:
+        if not KP_LOGO_AVAILABLE:
+            raise Exception(
+                "kpLogo is not available. Install kpLogo or set run_kplogo: false "
+                "in the configuration file."
+            )
         rep, prot = wildcards.replicate, wildcards.protein
         sample_tag = f"{rep}_{prot}"
 
@@ -360,12 +383,17 @@ rule copy_plogo_output:
             shutil.copy2(src, dst)
             print(f"copied {src} -> {dst}")
 
-# Remove intermediate_dir and output_dir, and not input_dir
+# Remove generated intermediates and outputs, but keep other files in
+# intermediate_dir (e.g. the bundled example dataset).
 rule clean_all:
     shell:
         r"""
-        rm -rf {INTERMEDIATE_DIR}
-        rm -rf {OUTPUT_DIR}
+        if [ "$(basename "{PPSEQ_DIR}")" != "preprocessed_example_sequences" ]; then
+            rm -rf "{PPSEQ_DIR}"
+        fi
+        rm -rf "{LOGO_INPUT_DIR}"
+        rm -rf "{LOGO_OUTPUT_DIR}"
+        rm -rf "{OUTPUT_DIR}"
         rm -rf logs
         rm -f done
         """

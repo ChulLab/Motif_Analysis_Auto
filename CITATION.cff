@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated protocol and the archived release."
+title: "Motif Analysis Automation"
+abstract: "Snakemake pipeline for high-throughput in vitro Cas13 cleavage motif discovery using random substrate libraries and next-generation sequencing."
+type: software
+authors:
+  - family-names: Lam
+    given-names: Joe K.C.
+    affiliation: "School of Biomedical Sciences, LKS Faculty of Medicine, The University of Hong Kong, Hong Kong, China"
+    email: joelamkc@connect.hku.hk
+  - family-names: Ng
+    given-names: Hadrien
+    affiliation: "School of Biomedical Sciences, LKS Faculty of Medicine, The University of Hong Kong, Hong Kong, China"
+  - family-names: Kwon
+    given-names: S. Chul
+    affiliation: "School of Biomedical Sciences, LKS Faculty of Medicine, The University of Hong Kong, Hong Kong, China"
+    email: chul@hku.hk
+license: MIT
+repository-code: "https://github.com/ChulLab/Motif_Analysis_Auto"
+url: "https://github.com/ChulLab/Motif_Analysis_Auto"
+version: "1.0.0"
+date-released: "2026-11-03"
+keywords:
+  - Cas13
+  - cleavage motif
+  - motif discovery
+  - in vitro cleavage assay
+  - next-generation sequencing
+  - Snakemake
+# Update the journal, volume, pages, and DOI after the protocol is published.
+preferred-citation:
+  type: article
+  title: "Protocol for high-throughput in vitro cleavage assay for Cas13 motif discovery"
+  authors:
+    - family-names: Lam
+      given-names: Joe K.C.
+      affiliation: "School of Biomedical Sciences, LKS Faculty of Medicine, The University of Hong Kong, Hong Kong, China"
+    - family-names: Ng
+      given-names: Hadrien
+      affiliation: "School of Biomedical Sciences, LKS Faculty of Medicine, The University of Hong Kong, Hong Kong, China"
+    - family-names: Kwon
+      given-names: S. Chul
+      affiliation: "School of Biomedical Sciences, LKS Faculty of Medicine, The University of Hong Kong, Hong Kong, China"
+  year: 2026

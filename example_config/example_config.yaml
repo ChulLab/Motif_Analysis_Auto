@@ -101,6 +101,9 @@ mapped_clv_table:
 
 ### pLogo Generation with kpLogo Package ###
 
+# Set to false to skip kpLogo and generate logos manually with the pLogo web server.
+run_kplogo: true
+
 max_k: 1
 min_count: 0
 p_cutoff: 0.05

@@ -1,15 +1,6 @@
 .snakemake/
-eff/
-fg_*/
-fluor/
-kplogo_output/
 logs/
-Old/
-WT-NT/
 done
-preference_data_*.csv
-EGFP-C1_8nt
-uv.lock
 miniconda3/
 .venv/
 venv/
@@ -17,3 +8,11 @@ __pycache__/
 *.pyc
 .cache/
 .DS_Store
+input/
+output/
+intermediate_files/preprocessed_example_sequences/
+intermediate_files/preprocessed_sequences/
+intermediate_files/logo_input/
+intermediate_files/logo_output/
+*.part
+*.log

@@ -22,7 +22,7 @@ def load_config(path="config.yaml"):
         return yaml.safe_load(f)
 
 def load_manifest(cfg):
-    df = pd.read_csv(cfg["sample_sheet"], dtype={"replicate": str})
+    df = pd.read_csv(cfg["sample_sheet"], dtype={"replicate": str}, encoding="utf-8-sig")
     ppseq = Path(cfg["intermediate_dir"]) / cfg["preprocessed_seq_dir"]
     df["file"]  = df.apply(lambda r: str(ppseq /
                        f"{r.replicate}_{r.protein}-{r.type}.collapsed.tsv"), axis=1)

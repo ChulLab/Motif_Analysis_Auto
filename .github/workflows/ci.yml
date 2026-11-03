@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Python dependencies
+        run: uv sync --frozen
+
+      - name: Validate configuration files
+        run: |
+          uv run python - <<'PY'
+          import pandas as pd
+          import yaml
+
+          for path in [
+              "example_config/example_config.yaml",
+              "full_config/full_config.yaml",
+              "my_config/my_config.yaml",
+          ]:
+              with open(path) as handle:
+                  yaml.safe_load(handle)
+
+          for path in [
+              "example_config/examples.csv",
+              "full_config/samples.csv",
+              "my_config/my_samples.csv",
+          ]:
+              df = pd.read_csv(path)
+              assert df.shape[1] == 9, path
+              assert not df.duplicated(["replicate", "protein", "type"]).any(), path
+          PY
+
+      - name: Unpack example data
+        run: unzip -q intermediate_files/preprocessed_example_sequences.zip -d intermediate_files/
+
+      - name: Run example pipeline without kpLogo
+        run: uv run snakemake --configfile ./example_config/example_config.yaml --config run_kplogo=false --cores 2
+
+      - name: Check generated outputs
+        run: |
+          test -s output/mapped_clv_seq_full.xlsx
+          test -s output/main_fig/fig2c_lwa_motif-clv-eff.pdf
+          test -s output/supp_fig/supp6a_Lwa_clv-eff.pdf

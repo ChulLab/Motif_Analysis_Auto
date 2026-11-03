@@ -7,20 +7,20 @@
 # Input, intermediate output and output directories
 # Please ensure your device or server of choice has sufficient storage space for all of the following directories
 
-input_dir: "./input"
+input_dir: "input"
 # raw NGS reads should be downloaded into input_dir/
 
-intermediate_dir: "./intermediate_files"
+intermediate_dir: "intermediate_files"
 # intermediate output files will be exported here
 
 preprocessed_seq_dir: "preprocessed_sequences"
 # preprocessed-seq_dir is located inside intermediate_dir for storing preprocessed and collapsed sequences in .tsv format
 
-output_dir: "./output"
+output_dir: "output"
 # this stores the final output files
 
 # Sample names & parameters
-sample_sheet: "./full_config/samples.csv"
+sample_sheet: "full_config/samples.csv"
 # change the names and parameters here to your liking
 
 #############################
@@ -138,6 +138,9 @@ mapped_clv_table:
 
 
 ### pLogo Generation with kpLogo Package ###
+
+# Set to false to skip kpLogo and generate logos manually with the pLogo web server.
+run_kplogo: true
 
 max_k: 1
 min_count: 0
