@@ -83,13 +83,13 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ## Installation Guide
 Please clone the repository from GitHub to a desired location on your device or server:
 ```bash
-git clone <repository-url>
+git clone https://github.com/ChulLab/Motif_Analysis_Auto 
 ```
 
 ### Setting Up Conda Environment:
 Please move into the cloned directory before proceeding:
 ```bash
-cd <repository-folder>
+cd Motif_Analysis_Auto
 ```
 
 On older versions of Conda where libmamba may not be installed, install it by running the following:
@@ -111,19 +111,20 @@ Simply run:
 ```bash
 uv sync
 ```
+If you see an error message documenting a failure to install xlsxwriter, you may ignore it. This is expected for hpc cluster users, but is harmless to the program. Alternatively, you may use “uv sync --link-mode=symlink” instead of “uv sync”. Please consult uv’s official documentation before you do so. 
 
-Make sure the conda environment is activated whenever you run the pipeline, so that `cutadapt`, `fastx_toolkit`, `seqkit`, and `kpLogo` are available on `PATH`.
+Make sure the Conda environment is activated whenever you run the pipeline, so that `cutadapt`, `fastx_toolkit`, `seqkit`, and `kpLogo` are available on `PATH`.
 
 ## Initial Configuration
 ### Configuring Input & Output Directories/Files:
-If you are testing the example subset or the full dataset (more in the next section), you need not modify any files. Simply move on to the next section. However, for the full dataset, please make sure the cloned directory has sufficient storage (at least 100 GB).
+If you are testing the example subset or the full dataset (more in the next section), you need not modify any files. Simply move on to the next section. However, for the full dataset, please make sure the directory containing the cloned repository has sufficient storage (at least 100 GB).
 
 If you are using your own data, please edit the configuration file you intend to use (for example, `my_config/my_config.yaml`) and modify the parameters `input_dir`, `intermediate_dir` and `output_dir` to point to directories of your liking. Again, make sure these locations have sufficient storage. You may also modify the names of `preprocessed_seq_dir` and `output_dir` if you wish. But they will still be produced under the same parent directory. Note that both relative paths (without "./", see the file for examples) and full paths are allowed, although full paths are recommended.
 
 ### Setting Up Samples:
 This package can be used in one of 3 ways: with an example subset, with the full dataset from which we produced the figures for our previous publication, and with your own data.
 
-The example sequences are included as a compressed .zip file under `<program_repo>/intermediate_files/preprocessed_example_sequences.zip`. These sequences make up a subset of the preprocessed intermediates of the full dataset. In particular, they contain the preprocessed `.collapsed.tsv` files of LwaCas13a cleavage samples and the dictionary samples for both replicates. Before proceeding, unzip the file in the same directory (`intermediate_files`) and check that the folder produced is named `preprocessed_example_sequences`. Do not place the folder elsewhere for this use case.
+The example sequences are included as a compressed .zip file under `Motif_Analysis_Auto/intermediate_files/preprocessed_example_sequences.zip`. These sequences make up a subset of the preprocessed intermediates of the full dataset. In particular, they contain the preprocessed `.collapsed.tsv` files of LwaCas13a cleavage samples and the dictionary samples for both replicates. Before proceeding, unzip the file in the same directory (`intermediate_files`) and check that the folder produced is named `preprocessed_example_sequences`. Do not place the folder elsewhere for this use case.
 
 ```bash
 unzip intermediate_files/preprocessed_example_sequences.zip -d intermediate_files/
@@ -131,7 +132,7 @@ unzip intermediate_files/preprocessed_example_sequences.zip -d intermediate_file
 
 To download the full dataset (deposited in the NCBI Gene Expression Omnibus, GEO, under the accession number GSE313507) necessary for reproducing figures in our publication, please add execution rights to the download script by running: `chmod +x ./fetch_raw.sh`, then run the bash script fetch_raw.sh with the syntax:
 ```bash
-./fetch_raw.sh <full/path/to/samples.csv> <full/path/to/input_dir>
+./fetch_raw.sh full_config/samples.csv input
 ```
 
 The download process will take considerable time. If the process crashed mid-run or some samples failed to download, simply run it again. Files that are already downloaded will be skipped. Please check that a total of 22 files of the extension `.fastq.gz` are downloaded.
