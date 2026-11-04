@@ -126,7 +126,7 @@ Python package versions are pinned in `uv.lock`. The Conda environment recipe is
 
 If you use this software, please cite the associated protocol and the archived software release. Citation metadata are provided in `CITATION.cff`.
 
-Lam JKC, Ng H, Kwon SC. Protocol for high-throughput in vitro cleavage assay for Cas13 motif discovery. 2026.
+Lam JKC, Ng H, Kwon SC. Protocol for a high-throughput in vitro cleavage assay for Cas13 motif discovery. 2026.
 
 The archived release DOI will be added to `CITATION.cff` and this README after publication.
 
