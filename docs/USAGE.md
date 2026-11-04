@@ -75,7 +75,7 @@ Note that this package is designed to be run on a Linux distribution as the kpLo
 We use conda to manage the installation of kpLogo and other packages. Please refer to [Conda's official installation guide](https://docs.conda.io/projects/conda/en/latest/user-guide/index.html) if you do not have Conda installed.
             
 ### UV
-We also recommend using [UV](https://docs.astral.sh/uv/) for managing python-related environments. It can be installed by simply running on the terminal:
+We also recommend using [UV](https://docs.astral.sh/uv/) for managing python-related environments. For Linux, it can be installed by simply running on the terminal:
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
