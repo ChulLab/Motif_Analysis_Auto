@@ -399,7 +399,6 @@ def plot_motif_scatter(mapped_pairs, target, motif_type,
                        n_top, n_bottom, xlim, ylim, out_path,
                        highlight_motif=None):
 
-        
     """Rep1 vs Rep2 mean clv/dict scatter for one (protein, type) sample.
 
     mapped_pairs : list of ((rep1, sClvName1, df1), (rep2, sClvName2, df2)) tuples
@@ -413,6 +412,13 @@ def plot_motif_scatter(mapped_pairs, target, motif_type,
     elif isinstance(highlight_motif, str):
         highlight_motif = [highlight_motif]
         
+    available = {xRep1[1].split('_', 1)[1] for xRep1, _ in mapped_pairs}
+    if target not in available:
+        raise ValueError(
+            f"motif_figs target {target!r} not found in mapped samples. "
+            f"Available targets: {sorted(available)}"
+        )
+
     for xRep1, xRep2 in mapped_pairs:
         sample_key = xRep1[1].split('_', 1)[1]          # 'Lbu-CR'
         if sample_key != target:

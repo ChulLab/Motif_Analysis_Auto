@@ -43,8 +43,12 @@ meta = pd.read_csv(config["sample_sheet"], dtype={"replicate": str}, encoding="u
 PAIRS = list(meta.index)
 KPLOGO_PAIRS = [(r, p) for (r, p, t) in PAIRS if t == "CR"]
 
+_available_targets = {f"{p}-{t}" for (r, p, t) in PAIRS if t == "CR"}
+
 MOTIF_FIGS = config.get("motif_figs") or {}    # dict; keys are sample labels, values include 'out'
+
 FIG2F = config.get("fig2f")
+
 SUPP6A_BINS = config["supp6a"]["bins"]
 
 # --- derived output lists (must match what generate_plots.py writes) ---
@@ -61,7 +65,23 @@ _supp5b  = out(config["supp5b"])
 _supp6a = [out_template(config["supp6a"], "out_template", protein=p)
            for p in _cr_proteins]
 
-_motif  = [os.path.join(OUTPUT_DIR, v["out"]) for v in config["motif_figs"].values()]
+# gate for fig2c,e
+_motif = [] # dict; keys are sample labels, values include 'out'
+for target, v in MOTIF_FIGS.items():
+    if target not in _available_targets:
+        raise ValueError(
+            f"motif_figs target {target!r} not found in samples.csv. "
+            f"Available CR targets: {sorted(_available_targets)}"
+        )
+    _motif.append(os.path.join(OUTPUT_DIR, v["out"]))
+
+# gate for fig2f
+
+if FIG2F and FIG2F["target"] not in _available_targets:
+    raise ValueError(
+        f"fig2f target {FIG2F['target']!r} not found in samples.csv. "
+        f"Available CR targets: {sorted(_available_targets)}"
+    )
 
 _fig2f  = [out(config["fig2f"], "out"),
            out(config["fig2f"], "stats_out")] if config.get("fig2f") else []

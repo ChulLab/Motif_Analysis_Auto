@@ -76,7 +76,8 @@ supp6a:
   colors: ["tab:blue", "tab:orange", "tab:green", "tab:red"] 
 
 # Fig-2c,e: per-sample motif-scatter recipes
-# plot compares 2 replicates, please comment out if only 1 replicate is involved
+# this plot compares 2 replicates, please set as "motif_figs: null" and 
+# remove or comment out all sample descriptions if only 1 replicate is involved
 motif_figs: 
   Lbu-CR: 
     motif_type: 2nt_motif 
@@ -120,6 +121,7 @@ motif_figs:
     out: main_fig/fig2e_psp_motif-clv-eff.pdf 
 
 # Fig-2f: motif boxplot + Mann-Whitney vs reference, for Psp only
+# Set "fig2f: null" to skip this figure.
 fig2f:
   target:     "Psp-CR"
   motifs:     ["TAT", "TCA", "CAA", "GTT"]
