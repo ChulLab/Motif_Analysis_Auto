@@ -142,7 +142,6 @@ The source code is available at https://github.com/ChulLab/Motif_Analysis_Auto. 
 
 The full sequencing data are available from the NCBI Gene Expression Omnibus under accession GSE313507. The preprocessed example dataset is included in this repository.
 
-## Contact
+## Author contributions
 
-- Technical contact: Joe K.C. Lam (joelamkc@connect.hku.hk)
-- Lead contact: S. Chul Kwon (chul@hku.hk)
+Joe K.C. Lam, Hadrien Ng, and S. Chul Kwon contributed to the establishment of protocols. J.K.C.L. performed the experiments. J.K.C.L., H.N., and S.C.K. analyzed the data. H.N. developed the automated analysis pipeline. J.K.C.L., H.N., and S.C.K. wrote and revised the manuscript.
