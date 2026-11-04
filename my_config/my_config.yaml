@@ -91,14 +91,14 @@ motif_figs: null
 
 # Fig-2f: motif boxplot + Mann-Whitney vs reference, for Psp only
 # Set "fig2f: null" to skip this figure.
-fig2f:
-  target:     "MyProtein-CR"
-  motifs:     ["TAT", "TCA", "CAA", "GTT"]
-  reference:  "GTT"
-  rep1_ylim:  [0, 1]
-  rep2_ylim:  [0, 6]
-  out:        main_fig/fig2f_myprotein_clv-eff.pdf
-  stats_out:  main_fig/fig2_myprotein_mann-whitney.tsv
+fig2f: null
+  # target:     "MyProtein-CR"
+  # motifs:     ["TAT", "TCA", "CAA", "GTT"]
+  # reference:  "GTT"
+  # rep1_ylim:  [0, 1]
+  # rep2_ylim:  [0, 6]
+  # out:        main_fig/fig2f_myprotein_clv-eff.pdf
+  # stats_out:  main_fig/fig2_myprotein_mann-whitney.tsv
 
 # ---- Tables ----
 mapped_clv_table:
