@@ -4,7 +4,7 @@ Snakemake pipeline for high-throughput in vitro Cas13 cleavage motif discovery u
 
 ## Associated publication
 
-**Protocol for high-throughput in vitro cleavage assay for Cas13 motif discovery**
+**Protocol for a high-throughput in vitro cleavage assay for Cas13 motif discovery**
 
 Joe K.C. Lam, Hadrien Ng, and S. Chul Kwon
 
